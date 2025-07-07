@@ -1,472 +1,486 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Terminal | ThisIs4mir | Anon | fsociety</title>
-    <link href='https://fonts.googleapis.com/css?family=Sarpanch:400,600' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+    <title>LUXURY HACKER TERMINAL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: #000;
-            color: #00ff41;
-            font-family: 'Share Tech', sans-serif;
+            font-family: 'IBM Plex Mono', monospace;
         }
-
+        
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0ff0d0;
+            --secondary: #00ff9d;
+            --background: #0a0f15;
+            --surface: #121a25;
+            --gold: #ffd700;
+            --error: #ff5555;
+        }
+        
         body {
+            background: linear-gradient(135deg, #050a12 0%, #0a1525 100%);
+            color: var(--primary);
             height: 100vh;
             overflow: hidden;
             position: relative;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .terminal-container {
+            width: 95%;
+            max-width: 900px;
+            height: 90vh;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            background: radial-gradient(ellipse at center, #0a160a 0%, #000 70%);
+            border: 1px solid rgba(0, 255, 157, 0.1);
         }
-
-        .matrix-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-        }
-
-        .header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #00aa00;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header h1 {
-            font-family: 'Sarpanch', sans-serif;
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px #00ff41;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #00ff41, #00dd00, #00bb00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            color: #00aa00;
-        }
-
-        .terminal-container {
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            border: 1px solid #00aa00;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
-            position: relative;
-            z-index: 10;
-            background: rgba(0, 15, 0, 0.8);
-        }
-
+        
         .terminal-header {
-            background: rgba(0, 25, 0, 0.9);
-            padding: 12px 15px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 20, 30, 0.8);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+        }
+        
+        .logo {
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #005500;
+            gap: 10px;
         }
-
-        .header-buttons {
+        
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        
+        .controls {
             display: flex;
-            gap: 8px;
+            gap: 12px;
         }
-
-        .header-button {
+        
+        .control-btn {
             width: 14px;
             height: 14px;
             border-radius: 50%;
+            cursor: pointer;
         }
-
-        .close { background-color: #ff5f56; }
-        .minimize { background-color: #ffbd2e; }
-        .maximize { background-color: #27c93f; }
-
-        .header-title {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            color: #00ff41;
-        }
-
-        .terminal-body {
+        
+        .close { background: #ff5f57; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #28c940; }
+        
+        .terminal-content {
+            flex: 1;
             padding: 25px;
-            height: 400px;
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #00ff41 #001500;
+            display: flex;
+            flex-direction: column;
         }
-
-        .terminal-body::-webkit-scrollbar {
-            width: 8px;
+        
+        .welcome-message {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
         }
-
-        .terminal-body::-webkit-scrollbar-track {
-            background: #001500;
+        
+        .welcome-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
-
-        .terminal-body::-webkit-scrollbar-thumb {
-            background-color: #00ff41;
-            border-radius: 4px;
-        }
-
-        .terminal-line {
-            display: block;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
+        
+        .welcome-subtitle {
+            color: rgba(0, 255, 157, 0.7);
             font-size: 1.1rem;
-            line-height: 1.8;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
+            line-height: 1.7;
+            max-width: 600px;
         }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        
+        .command-history {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
         }
-
-        .input-line {
+        
+        .command-output {
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(0, 255, 157, 0.3);
+        }
+        
+        .command-line {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-top: 1px solid #005500;
-            background: rgba(0, 20, 0, 0.9);
+            gap: 8px;
         }
-
-        .input-prompt {
-            color: #00ff41;
-            margin-right: 10px;
-            font-size: 1.1rem;
+        
+        .command-line:before {
+            content: ">";
+            color: var(--gold);
+            font-weight: 700;
         }
-
-        .input-field {
-            flex-grow: 1;
+        
+        .command-result {
+            color: rgba(0, 255, 157, 0.8);
+            padding-left: 20px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+        
+        .command-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 0;
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+        }
+        
+        .input-prefix {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        #command-input {
+            flex: 1;
             background: transparent;
             border: none;
-            color: #00ffcc;
-            font-family: 'Share Tech', sans-serif;
+            color: var(--primary);
             font-size: 1.1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            padding: 8px 0;
             outline: none;
-            letter-spacing: 1px;
+            caret-color: var(--primary);
         }
-
+        
         .cursor {
             display: inline-block;
             width: 8px;
             height: 18px;
-            background-color: #00ff41;
-            margin-left: 4px;
+            background-color: var(--primary);
             animation: blink 1s infinite;
-            vertical-align: middle;
-            box-shadow: 0 0 5px #00ff41;
+            margin-left: 2px;
         }
-
+        
+        .shortcuts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+        }
+        
+        .shortcut {
+            background: rgba(0, 20, 30, 0.6);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 157, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+        
+        .shortcut:hover {
+            transform: translateY(-3px);
+            background: rgba(0, 30, 40, 0.7);
+            border-color: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .shortcut-key {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .shortcut-desc {
+            color: rgba(0, 255, 157, 0.7);
+            font-size: 0.95rem;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            background: rgba(10, 20, 30, 0.8);
+            border-top: 1px solid rgba(0, 255, 157, 0.1);
+            font-size: 0.9rem;
+            color: rgba(0, 255, 157, 0.7);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary);
+            box-shadow: 0 0 10px var(--secondary);
+        }
+        
+        /* Animations */
         @keyframes blink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            50% { opacity: 0.3; }
         }
-
-        .highlight {
-            color: #ffff00;
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .branding {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1.5rem;
-            opacity: 0.7;
-            letter-spacing: 2px;
-            color: #00aa00;
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(0, 170, 0, 0.5);
+        
+        /* Effects */
+        .glow {
+            text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(0, 255, 157, 0.5);
         }
-
-        .status-bar {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 20, 0, 0.8);
-            padding: 8px 15px;
-            border: 1px solid #00aa00;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            z-index: 10;
+        
+        .gold-text {
+            color: var(--gold);
         }
-
-        .status-item {
-            margin-bottom: 5px;
+        
+        /* Error message */
+        .error {
+            color: var(--error);
         }
-
-        .status-value {
-            color: #ffff00;
-        }
-
-        .glitch {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="2" y="20%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="40%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="60%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="80%" fill="rgba(0,255,65,0.1)"/></svg>');
-            opacity: 0.3;
-            animation: glitch 5s infinite linear;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0,0); }
-            20% { transform: translate(-3px, 2px); }
-            40% { transform: translate(2px, -1px); }
-            60% { transform: translate(-1px, 3px); }
-            80% { transform: translate(3px, -2px); }
-            100% { transform: translate(0,0); }
-        }
-
+        
+        /* Responsive design */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5rem;
+            .terminal-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
             }
             
-            .terminal-body {
-                padding: 15px;
-                height: 350px;
+            .welcome-title {
+                font-size: 1.8rem;
             }
             
-            .terminal-line {
-                font-size: 1rem;
+            .shortcuts {
+                flex-direction: column;
             }
             
-            .branding {
-                font-size: 1.2rem;
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .status-bar {
-                top: 15px;
-                left: 15px;
-                font-size: 0.8rem;
+            .shortcut {
+                min-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="matrix-rain" id="matrixRain"></div>
-    <div class="glitch"></div>
-    
-    <div class="header">
-        <h1>HACKER TERMINAL</h1>
-        <p>Access Level: ROOT | Status: SECURE | User: ThisIs4mir</p>
-    </div>
-    
-    <div class="status-bar">
-        <div class="status-item">CONNECTION: <span class="status-value">fsociety</span></div>
-        <div class="status-item">IDENTITY: <span class="status-value">Anon</span></div>
-        <div class="status-item">STATUS: <span class="status-value">STEALTH</span></div>
-    </div>
-    
     <div class="terminal-container">
         <div class="terminal-header">
-            <div class="header-buttons">
-                <div class="header-button close"></div>
-                <div class="header-button minimize"></div>
-                <div class="header-button maximize"></div>
+            <div class="logo">
+                <div class="logo-text">LUX-TERMINAL</div>
             </div>
-            <div class="header-title">root@h4ck3r-terminal:~ [fsociety_operation_active]</div>
+            <div class="controls">
+                <div class="control-btn close"></div>
+                <div class="control-btn minimize"></div>
+                <div class="control-btn maximize"></div>
+            </div>
         </div>
         
-        <div class="terminal-body" id="terminalBody">
-            <span terminal="1" class="terminal-line">
-                > Initializing system...<br>
-                > Granting root access to <span class="highlight">ThisIs4mir</span><br>
-                > Establishing secure connection to <span class="highlight">fsociety</span> network...<br>
-                > Identity set to <span class="highlight">Anon</span><br>
-                <br>
-                > System ready. All connections encrypted.<br>
-                > Tracking impossible.<br>
-                <br>
-                > Running fsociety operation...<br>
-                <br>
-                > established connection.....<br>
-                <br>
-                > exporting iphoto library......<br>
-                <br>
-                > -36,-9,-39,-27,-18,-9,141,-132,15,87,-36,-30,99,-63,-51,24,-9,15,24,-6,-66,48,-21,111,0,0,-93,9, -60,3,15,87,-105,69,-15,87,3,0,-153,111,3,12,-21,9,-3,-69,111,0,0,-120,51,-18,63,-102,87,-15,42, -24,3,-111,51,81,-27,-36,-57,72,-33,9,-60,3,15,87,-3,-6,-96,57,-15,-3,-9,102,0,-144,135,24,0,-153, 3,99,9,-105,114,-63,6,48,3,-108,120,27,-96,39,18,-120,42,-42,111,-96,39,-15,0,-12,66,6,24,-84, 123,-141,0,0,36,42,-93,15,120,21,-135,42,-72,102,-60,30,93,-141,18,0,99,-81,-18,-18,144,-144, -15,48,0,-3,63,9,-60,-27,108,-102,12,<br>
-                <br>
-                > successful........<br>
-                <br>
-                > disabling connection.......<br>
-                <br>
-                > Operation complete. All traces erased.<br>
-                <br>
-                > Ready for next command.<br>
-            </span>
+        <div class="terminal-content">
+            <div class="welcome-message">
+                <div class="welcome-title">Luxury Hacker Terminal</div>
+                <div class="welcome-subtitle">
+                    Secure connection established | AES-256 encryption active<br>
+                    Minimalist design with premium features. Type <span class="gold-text">'help'</span> for available commands.
+                </div>
+            </div>
+            
+            <div class="command-history" id="history">
+                <div class="command-output">
+                    <div class="command-line">system status</div>
+                    <div class="command-result">> System: Operational<br>> Security: Level 9<br>> Memory: 64GB DDR5<br>> Encryption: Active</div>
+                </div>
+            </div>
+            
+            <div class="command-input-container">
+                <div class="input-prefix">user@lux-term:~$</div>
+                <input type="text" id="command-input" autocomplete="off" autofocus>
+                <div class="cursor"></div>
+            </div>
+            
+            <div class="shortcuts">
+                <div class="shortcut" data-command="help">
+                    <div class="shortcut-key">help</div>
+                    <div class="shortcut-desc">Show available commands</div>
+                </div>
+                <div class="shortcut" data-command="clear">
+                    <div class="shortcut-key">clear</div>
+                    <div class="shortcut-desc">Reset terminal</div>
+                </div>
+                <div class="shortcut" data-command="system">
+                    <div class="shortcut-key">system</div>
+                    <div class="shortcut-desc">Show system info</div>
+                </div>
+                <div class="shortcut" data-command="encrypt">
+                    <div class="shortcut-key">encrypt</div>
+                    <div class="shortcut-desc">Initiate encryption</div>
+                </div>
+            </div>
         </div>
         
-        <div class="input-line">
-            <span class="input-prompt">$</span>
-            <input type="text" class="input-field" id="commandInput" autofocus>
-            <span class="cursor"></span>
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator"></div>
+                <div>CONNECTED</div>
+            </div>
+            <div class="status-item">ENCRYPTION: AES-256</div>
+            <div class="status-item">USER: ROOT</div>
         </div>
     </div>
-    
-    <div class="branding">ThisIs4mir | Anon | fsociety</div>
 
     <script>
-        // Enhanced Matrix Rain Effect
-        const matrixRain = document.getElementById('matrixRain');
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        matrixRain.appendChild(canvas);
+        // Terminal functionality
+        const commandInput = document.getElementById('command-input');
+        const historyElement = document.getElementById('history');
+        const shortcuts = document.querySelectorAll('.shortcut');
         
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-        
-        const chars = "01";
-        const charSize = 18;
-        const columns = width / charSize;
-        const drops = [];
-        
-        for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * -100;
-        }
-        
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
-            ctx.fillRect(0, 0, width, height);
-            
-            ctx.fillStyle = '#00ff41';
-            ctx.font = `${charSize}px monospace`;
-            
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                const x = i * charSize;
-                const y = drops[i] * charSize;
-                
-                ctx.fillText(text, x, y);
-                
-                // Add glow effect
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#00ff41';
-                
-                if (y > height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                
-                drops[i]++;
-            }
-            
-            requestAnimationFrame(drawMatrix);
-        }
-        
-        // Terminal typing effect
-        function getAllElementsWithAttribute(attribute) {
-            var matchingElements = [];
-            var allElements = document.getElementsByTagName('span');
-            
-            for (var i = 0, n = allElements.length; i < n; i++) {
-                if (allElements[i].getAttribute(attribute)) {
-                    matchingElements.push(allElements[i]);
-                }
-            }
-            return matchingElements;
-        }
-
-        var terminalElements = getAllElementsWithAttribute("terminal");
-
-        function terminals_init() {
-            var elements = terminalElements;
-            for (var i = 0; i < elements.length; i++) {
-                var e = elements[i];
-                e.completeHTML = e.innerHTML;
-                e.innerHTML = "";
-                e.i = 0;
-            }
-        }
-
-        function terminals_start() {
-            terminals_next();
-        }
-
-        function terminals_next() {
-            var done = true;
-            var elements = terminalElements;
-
-            for (var i = 0; i < elements.length && done == true; i++) {
-                var e = elements[i];
-                e.i++;
-                
-                if (e.innerHTML.length >= e.completeHTML.length) {
-                    e.innerHTML = e.completeHTML;
-                } else {
-                    var s = e.completeHTML.substring(0, e.i);
-                    
-                    if (s.slice(-1) == " ") {
-                        if (e.innerHTML.length % 6 == 0) {
-                            s = s + "";
-                        } else {
-                            s = s + "|";
-                        }
-                    } else {
-                        s = s + "|";
-                    }
-                    
-                    e.innerHTML = s;
-                    done = false;
-                }
-            }
-
-            if (!done) {
-                setTimeout(terminals_next, 800/20);
-            } else {
-                // Add blinking cursor after typing completes
-                const cursor = document.createElement('span');
-                cursor.className = 'cursor';
-                elements[0].parentNode.appendChild(cursor);
-                
-                // Enable command input
-                document.getElementById('commandInput').disabled = false;
-                document.getElementById('commandInput').focus();
-            }
-        }
-        
-        // Initialize
-        window.onload = function() {
-            drawMatrix();
-            terminals_init();
-            setTimeout(terminals_start, 1000);
-            
-            // Disable input until typing completes
-            document.getElementById('commandInput').disabled = true;
-            
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
+        // Commands with proper functionality
+        const commands = {
+            help: () => `
+                > Available commands:
+                > <span class="gold-text">help</span> - Show this help message
+                > <span class="gold-text">clear</span> - Clear terminal screen
+                > <span class="gold-text">system</span> - Show system information
+                > <span class="gold-text">encrypt</span> - Start encryption protocol
+                > <span class="gold-text">decode</span> - Decode encrypted message
+                > <span class="gold-text">connect</span> - Connect to mainframe
+                > <span class="gold-text">date</span> - Show current date
+                > <span class="gold-text">theme</span> - Change terminal theme
+            `,
+            clear: () => {
+                historyElement.innerHTML = '';
+                return '';
+            },
+            system: () => `
+                > SYSTEM INFORMATION:
+                > OS: LuxTerm OS v3.0
+                > Kernel: 6.1.0-luxury
+                > Uptime: 42 days, 13:27:15
+                > CPU: Quantum Processor Q-9000
+                > Memory: 64GB DDR5
+                > Security: Level 9 Encryption
+                > AI: Neural Network v2.0
+            `,
+            encrypt: () => `
+                > INITIATING ENCRYPTION PROTOCOL...
+                > Generating AES-256 keys...
+                > <span class="gold-text">████████████████ 100%</span>
+                > ENCRYPTION COMPLETE. DATA SECURED.
+            `,
+            decode: () => `
+                > DECODING ENCRYPTED MESSAGE...
+                > Accessing security keys...
+                > Decrypting data streams...
+                > <span class="gold-text">MESSAGE: "ACCESS GRANTED"</span>
+            `,
+            connect: () => `
+                > CONNECTING TO MAINFRAME...
+                > Establishing secure connection...
+                > Bypassing firewalls...
+                > <span class="gold-text">CONNECTION ESTABLISHED</span>
+                > WELCOME TO THE CORE
+            `,
+            date: () => {
+                const now = new Date();
+                return `> Current date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            },
+            theme: () => `
+                > Available themes:
+                > <span class="gold-text">matrix</span> - Green/black theme
+                > <span class="gold-text">cyber</span> - Blue/purple theme
+                > <span class="gold-text">gold</span> - Gold/black theme
+                > <span class="gold-text">minimal</span> - Minimalist theme
+                > Use: <span class="gold-text">theme [name]</span>
+            `,
+            default: (cmd) => `> <span class="error">Command not found:</span> ${cmd}<br>> Type <span class="gold-text">'help'</span> for available commands`
         };
+        
+        // Execute command
+        function executeCommand(command) {
+            if (!command) return;
+            
+            const cmd = command.trim().toLowerCase();
+            let output;
+            
+            if (cmd.startsWith('theme ')) {
+                const theme = cmd.split(' ')[1];
+                output = `> Switching to theme: ${theme}...<br>> <span class="gold-text">Theme applied successfully</span>`;
+            } else {
+                output = commands[cmd] ? commands[cmd]() : commands.default(cmd);
+            }
+            
+            historyElement.innerHTML += `
+                <div class="command-output" style="animation: fadeIn 0.3s ease;">
+                    <div class="command-line">${command}</div>
+                    <div class="command-result">${output}</div>
+                </div>
+            `;
+            
+            // Scroll to bottom
+            historyElement.scrollTop = historyElement.scrollHeight;
+        }
+        
+        // Handle Enter key
+        commandInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value;
+                this.value = '';
+                
+                if (command.trim() === '') return;
+                
+                executeCommand(command);
+            }
+        });
+        
+        // Handle shortcut clicks
+        shortcuts.forEach(shortcut => {
+            shortcut.addEventListener('click', function() {
+                const command = this.getAttribute('data-command');
+                executeCommand(command);
+            });
+        });
+        
+        // Initial focus on input
+        commandInput.focus();
     </script>
 </body>
 </html>
