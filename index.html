@@ -1,24 +1,472 @@
-<link href='https://fonts.googleapis.com/css?family=Sarpanch:400,600' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
-<div class="terminal">
-  <div class="header">
-    <h1>¿Brenda?</h1>
-  </div>
-  <span terminal=1 class="terminal-line">
-    Hello Beautiful.
-  <br /><br />
-    Remember when you said you wanted to hack my phone? 
-  <br /><br />
-    Then I told you I was going to hack your phone and steal all your sexy photos, Well I wasnt joking!
-		<br /><br /><br />
-    established connection.....
-		<br /><br /><br />
-		exporting iphoto library......
-		<br /><br /><br />
-		-36,-9,-39,-27,-18,-9,141,-132,15,87,-36,-30,99,-63,-51,24,-9,15,24,-6,-66,48,-21,111,0,0,-93,9, -60,3,15,87,-105,69,-15,87,3,0,-153,111,3,12,-21,9,-3,-69,111,0,0,-120,51,-18,63,-102,87,-15,42, -24,3,-111,51,81,-27,-36,-57,72,-33,9,-60,3,15,87,-3,-6,-96,57,-15,-3,-9,102,0,-144,135,24,0,-153, 3,99,9,-105,114,-63,6,48,3,-108,120,27,-96,39,18,-120,42,-42,111,-96,39,-15,0,-12,66,6,24,-84, 123,-141,0,0,36,42,-93,15,120,21,-135,42,-72,102,-60,30,93,-141,18,0,99,-81,-18,-18,144,-144, -15,48,0,-3,63,9,-60,-27,108,-102,12,
-    <br /><br />
-    successful........
-		<br /><br />
-		disabling connection.......
-  </span>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Terminal | ThisIs4mir | Anon | fsociety</title>
+    <link href='https://fonts.googleapis.com/css?family=Sarpanch:400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: #000;
+            color: #00ff41;
+            font-family: 'Share Tech', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background: radial-gradient(ellipse at center, #0a160a 0%, #000 70%);
+        }
+
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #00aa00;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-family: 'Sarpanch', sans-serif;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px #00ff41;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ff41, #00dd00, #00bb00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00aa00;
+        }
+
+        .terminal-container {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            border: 1px solid #00aa00;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+            position: relative;
+            z-index: 10;
+            background: rgba(0, 15, 0, 0.8);
+        }
+
+        .terminal-header {
+            background: rgba(0, 25, 0, 0.9);
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #005500;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-button {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #00ff41;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            height: 400px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #00ff41 #001500;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #001500;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background-color: #00ff41;
+            border-radius: 4px;
+        }
+
+        .terminal-line {
+            display: block;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid #005500;
+            background: rgba(0, 20, 0, 0.9);
+        }
+
+        .input-prompt {
+            color: #00ff41;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .input-field {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: #00ffcc;
+            font-family: 'Share Tech', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            letter-spacing: 1px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #00ff41;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 5px #00ff41;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .highlight {
+            color: #ffff00;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 255, 0, 0.7);
+        }
+
+        .branding {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            letter-spacing: 2px;
+            color: #00aa00;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(0, 170, 0, 0.5);
+        }
+
+        .status-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 20, 0, 0.8);
+            padding: 8px 15px;
+            border: 1px solid #00aa00;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+
+        .status-item {
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            color: #ffff00;
+        }
+
+        .glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="2" y="20%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="40%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="60%" fill="rgba(0,255,65,0.1)"/><rect width="100%" height="2" y="80%" fill="rgba(0,255,65,0.1)"/></svg>');
+            opacity: 0.3;
+            animation: glitch 5s infinite linear;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0,0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 3px); }
+            80% { transform: translate(3px, -2px); }
+            100% { transform: translate(0,0); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .terminal-body {
+                padding: 15px;
+                height: 350px;
+            }
+            
+            .terminal-line {
+                font-size: 1rem;
+            }
+            
+            .branding {
+                font-size: 1.2rem;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .status-bar {
+                top: 15px;
+                left: 15px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-rain" id="matrixRain"></div>
+    <div class="glitch"></div>
+    
+    <div class="header">
+        <h1>HACKER TERMINAL</h1>
+        <p>Access Level: ROOT | Status: SECURE | User: ThisIs4mir</p>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-item">CONNECTION: <span class="status-value">fsociety</span></div>
+        <div class="status-item">IDENTITY: <span class="status-value">Anon</span></div>
+        <div class="status-item">STATUS: <span class="status-value">STEALTH</span></div>
+    </div>
+    
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="header-buttons">
+                <div class="header-button close"></div>
+                <div class="header-button minimize"></div>
+                <div class="header-button maximize"></div>
+            </div>
+            <div class="header-title">root@h4ck3r-terminal:~ [fsociety_operation_active]</div>
+        </div>
+        
+        <div class="terminal-body" id="terminalBody">
+            <span terminal="1" class="terminal-line">
+                > Initializing system...<br>
+                > Granting root access to <span class="highlight">ThisIs4mir</span><br>
+                > Establishing secure connection to <span class="highlight">fsociety</span> network...<br>
+                > Identity set to <span class="highlight">Anon</span><br>
+                <br>
+                > System ready. All connections encrypted.<br>
+                > Tracking impossible.<br>
+                <br>
+                > Running fsociety operation...<br>
+                <br>
+                > established connection.....<br>
+                <br>
+                > exporting iphoto library......<br>
+                <br>
+                > -36,-9,-39,-27,-18,-9,141,-132,15,87,-36,-30,99,-63,-51,24,-9,15,24,-6,-66,48,-21,111,0,0,-93,9, -60,3,15,87,-105,69,-15,87,3,0,-153,111,3,12,-21,9,-3,-69,111,0,0,-120,51,-18,63,-102,87,-15,42, -24,3,-111,51,81,-27,-36,-57,72,-33,9,-60,3,15,87,-3,-6,-96,57,-15,-3,-9,102,0,-144,135,24,0,-153, 3,99,9,-105,114,-63,6,48,3,-108,120,27,-96,39,18,-120,42,-42,111,-96,39,-15,0,-12,66,6,24,-84, 123,-141,0,0,36,42,-93,15,120,21,-135,42,-72,102,-60,30,93,-141,18,0,99,-81,-18,-18,144,-144, -15,48,0,-3,63,9,-60,-27,108,-102,12,<br>
+                <br>
+                > successful........<br>
+                <br>
+                > disabling connection.......<br>
+                <br>
+                > Operation complete. All traces erased.<br>
+                <br>
+                > Ready for next command.<br>
+            </span>
+        </div>
+        
+        <div class="input-line">
+            <span class="input-prompt">$</span>
+            <input type="text" class="input-field" id="commandInput" autofocus>
+            <span class="cursor"></span>
+        </div>
+    </div>
+    
+    <div class="branding">ThisIs4mir | Anon | fsociety</div>
+
+    <script>
+        // Enhanced Matrix Rain Effect
+        const matrixRain = document.getElementById('matrixRain');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        matrixRain.appendChild(canvas);
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        
+        const chars = "01";
+        const charSize = 18;
+        const columns = width / charSize;
+        const drops = [];
+        
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = `${charSize}px monospace`;
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                const x = i * charSize;
+                const y = drops[i] * charSize;
+                
+                ctx.fillText(text, x, y);
+                
+                // Add glow effect
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#00ff41';
+                
+                if (y > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+            
+            requestAnimationFrame(drawMatrix);
+        }
+        
+        // Terminal typing effect
+        function getAllElementsWithAttribute(attribute) {
+            var matchingElements = [];
+            var allElements = document.getElementsByTagName('span');
+            
+            for (var i = 0, n = allElements.length; i < n; i++) {
+                if (allElements[i].getAttribute(attribute)) {
+                    matchingElements.push(allElements[i]);
+                }
+            }
+            return matchingElements;
+        }
+
+        var terminalElements = getAllElementsWithAttribute("terminal");
+
+        function terminals_init() {
+            var elements = terminalElements;
+            for (var i = 0; i < elements.length; i++) {
+                var e = elements[i];
+                e.completeHTML = e.innerHTML;
+                e.innerHTML = "";
+                e.i = 0;
+            }
+        }
+
+        function terminals_start() {
+            terminals_next();
+        }
+
+        function terminals_next() {
+            var done = true;
+            var elements = terminalElements;
+
+            for (var i = 0; i < elements.length && done == true; i++) {
+                var e = elements[i];
+                e.i++;
+                
+                if (e.innerHTML.length >= e.completeHTML.length) {
+                    e.innerHTML = e.completeHTML;
+                } else {
+                    var s = e.completeHTML.substring(0, e.i);
+                    
+                    if (s.slice(-1) == " ") {
+                        if (e.innerHTML.length % 6 == 0) {
+                            s = s + "";
+                        } else {
+                            s = s + "|";
+                        }
+                    } else {
+                        s = s + "|";
+                    }
+                    
+                    e.innerHTML = s;
+                    done = false;
+                }
+            }
+
+            if (!done) {
+                setTimeout(terminals_next, 800/20);
+            } else {
+                // Add blinking cursor after typing completes
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                elements[0].parentNode.appendChild(cursor);
+                
+                // Enable command input
+                document.getElementById('commandInput').disabled = false;
+                document.getElementById('commandInput').focus();
+            }
+        }
+        
+        // Initialize
+        window.onload = function() {
+            drawMatrix();
+            terminals_init();
+            setTimeout(terminals_start, 1000);
+            
+            // Disable input until typing completes
+            document.getElementById('commandInput').disabled = true;
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+        };
+    </script>
+</body>
+</html>
