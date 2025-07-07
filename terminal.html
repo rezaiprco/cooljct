@@ -1,151 +1,24 @@
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hack&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Hack', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .terminal {
-            width: 80%;
-            max-width: 800px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border: 2px solid #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px #fff;
-            z-index: 1;
-        }
-
-        .terminal-header {
-            background-color: #111;
-            padding: 5px;
-            border-bottom: 1px solid #fff;
-        }
-
-        .terminal-title {
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .terminal-body {
-            padding: 10px;
-            height: 300px;
-            overflow-y: auto;
-        }
-
-        .prompt {
-            margin: 5px 0;
-            white-space: pre;
-            overflow: hidden;
-        }
-
-        .command {
-            color: #fff;
-        }
-
-        .output {
-            color: #fff;
-            margin: 5px 0;
-            white-space: pre;
-            overflow: hidden;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 20px;
-            background-color: #fff;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-
-        .typing {
-            border-right: 2px solid #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 2s steps(40, end), blink .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-    </style>
-</head>
-<body>
-    <canvas id="matrix"></canvas>
-    <div class="terminal">
-        <div class="terminal-header">
-            <span class="terminal-title">Hacker Terminal</span>
-        </div>
-        <div class="terminal-body">
-            <p class="prompt typing">user@thisis4mir:~$ echo "Welcome to the Hacker Terminal"</p>
-            <p class="output">Welcome to the Hacker Terminal</p>
-            <p class="prompt typing">user@thisis4mir:~$ whoami</p>
-            <p class="output">Anon</p>
-            <p class="prompt typing">user@thisis4mir:~$ group</p>
-            <p class="output">fsociety</p>
-            <p class="prompt">user@thisis4mir:~$ <span class="cursor">█</span></p>
-        </div>
-    </div>
-    <script>
-        // Matrix background effect
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUVXYZ0123456789';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0f0';
-            ctx.font = fontSize + 'px monospace';
-            drops.forEach((y, index) => {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                const x = index * fontSize;
-                ctx.fillText(text, x, y * fontSize);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[index] = 0;
-                }
-                drops[index]++;
-            });
-        }
-
-        setInterval(draw, 50);
-
-        // Cursor blink
-        const cursor = document.querySelector('.cursor');
-        setInterval(() => {
-            cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
-        }, 500);
-    </script>
-</body>
-</html>
+<link href='https://fonts.googleapis.com/css?family=Sarpanch:400,600' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+<div class="terminal">
+  <div class="header">
+    <h1>¿Brenda?</h1>
+  </div>
+  <span terminal=1 class="terminal-line">
+    Hello Beautiful.
+  <br /><br />
+    Remember when you said you wanted to hack my phone? 
+  <br /><br />
+    Then I told you I was going to hack your phone and steal all your sexy photos, Well I wasnt joking!
+		<br /><br /><br />
+    established connection.....
+		<br /><br /><br />
+		exporting iphoto library......
+		<br /><br /><br />
+		-36,-9,-39,-27,-18,-9,141,-132,15,87,-36,-30,99,-63,-51,24,-9,15,24,-6,-66,48,-21,111,0,0,-93,9, -60,3,15,87,-105,69,-15,87,3,0,-153,111,3,12,-21,9,-3,-69,111,0,0,-120,51,-18,63,-102,87,-15,42, -24,3,-111,51,81,-27,-36,-57,72,-33,9,-60,3,15,87,-3,-6,-96,57,-15,-3,-9,102,0,-144,135,24,0,-153, 3,99,9,-105,114,-63,6,48,3,-108,120,27,-96,39,18,-120,42,-42,111,-96,39,-15,0,-12,66,6,24,-84, 123,-141,0,0,36,42,-93,15,120,21,-135,42,-72,102,-60,30,93,-141,18,0,99,-81,-18,-18,144,-144, -15,48,0,-3,63,9,-60,-27,108,-102,12,
+    <br /><br />
+    successful........
+		<br /><br />
+		disabling connection.......
+  </span>
+</div>
