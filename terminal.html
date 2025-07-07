@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANON TERMINAL | LEGENDARY EDITION</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fira Code', 'IBM Plex Mono', monospace;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #00ff9d;
+            --secondary: #0ff0d0;
+            --background: #0a0a12;
+            --surface: rgba(18, 18, 32, 0.85);
+            --accent: #bd00ff;
+            --error: #ff5555;
+            --gold: #ffd700;
+            --matrix: #00ff41;
+        }
+        
+        body {
+            background: 
+                radial-gradient(circle at center, #050510 0%, #0a0a1a 100%),
+                linear-gradient(135deg, #0a0010, #001020);
+            color: var(--primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        body:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 157, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(15, 240, 208, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(189, 0, 255, 0.05) 0%, transparent 70%);
+            z-index: 0;
+            animation: bgPulse 15s infinite alternate;
+        }
+        
+        .matrix-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .terminal-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 90vh;
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 255, 157, 0.15);
+            box-shadow: 
+                0 0 0 1px rgba(189, 0, 255, 0.1),
+                0 15px 60px rgba(0, 0, 0, 0.9),
+                0 0 50px rgba(0, 255, 157, 0.1) inset;
+            backdrop-filter: blur(12px);
+        }
+        
+        .terminal-header {
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.15);
+            position: relative;
+        }
+        
+        .header-glow {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 15px var(--primary);
+            animation: scanline 6s linear infinite;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px var(--primary);
+            animation: glowPulse 1.5s infinite alternate;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+            position: relative;
+        }
+        
+        .logo-text:after {
+            content: "LEGENDARY EDITION";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            font-size: 0.6rem;
+            color: var(--secondary);
+            text-shadow: 0 0 5px rgba(15, 240, 208, 0.5);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            background: rgba(0, 20, 30, 0.5);
+            border: 1px solid rgba(0, 255, 157, 0.15);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.1);
+        }
+        
+        .user-icon {
+            color: var(--secondary);
+            animation: glowPulse 2s infinite alternate;
+        }
+        
+        .username {
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .terminal-content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .welcome-message {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.15);
+            position: relative;
+        }
+        
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+        
+        .welcome-title:after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            border-radius: 3px;
+            box-shadow: 0 0 15px var(--primary);
+        }
+        
+        .welcome-subtitle {
+            color: rgba(0, 255, 157, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-top: 20px;
+            text-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
+        }
+        
+        .kali-ascii {
+            color: var(--primary);
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.3;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+            animation: asciiGlow 5s infinite alternate;
+        }
+        
+        .command-history {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .command-output {
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(0, 255, 157, 0.3);
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .command-line {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fira Code', monospace;
+            text-shadow: 0 0 5px rgba(15, 240, 208, 0.3);
+        }
+        
+        .command-line:before {
+            content: "┌─[anon@kali]";
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .command-line:after {
+            content: "─╼";
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .command-result {
+            color: rgba(0, 255, 157, 0.85);
+            padding-left: 20px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            font-family: 'Fira Code', monospace;
+            margin-top: 10px;
+            text-shadow: 0 0 3px rgba(0, 255, 157, 0.2);
+        }
+        
+        .command-result:before {
+            content: "└──╼ ";
+            color: var(--accent);
+            margin-right: 5px;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--accent);
+        }
+        
+        .command-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 0;
+            border-top: 1px solid rgba(0, 255, 157, 0.15);
+            position: relative;
+        }
+        
+        .input-prefix {
+            color: var(--primary);
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            white-space: nowrap;
+            text-shadow: 0 0 5px var(--primary);
+        }
+        
+        .input-prefix:before {
+            content: "┌─(";
+            color: var(--accent);
+        }
+        
+        .input-prefix:after {
+            content: ")─[~]";
+            color: var(--accent);
+        }
+        
+        #command-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-family: 'Fira Code', monospace;
+            padding: 8px 0;
+            outline: none;
+            caret-color: var(--primary);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 3px var(--primary);
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: var(--primary);
+            animation: blink 1s infinite;
+            margin-left: 2px;
+            box-shadow: 0 0 5px var(--primary);
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 25px;
+            background: rgba(10, 10, 20, 0.9);
+            border-top: 1px solid rgba(0, 255, 157, 0.15);
+            font-size: 0.9rem;
+            color: rgba(0, 255, 157, 0.7);
+            font-family: 'Fira Code', monospace;
+            position: relative;
+        }
+        
+        .status-glow {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            box-shadow: 0 0 15px var(--accent);
+            animation: scanline 8s linear infinite;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        /* Animations */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px var(--primary); }
+            100% { text-shadow: 0 0 15px var(--primary), 0 0 25px rgba(0, 255, 157, 0.5); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes bgPulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes asciiGlow {
+            0% { text-shadow: 0 0 5px var(--primary); }
+            100% { text-shadow: 0 0 15px var(--primary), 0 0 20px var(--accent); }
+        }
+        
+        /* Text styles */
+        .accent {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(189, 0, 255, 0.7);
+            animation: glowPulse 2s infinite alternate;
+        }
+        
+        .success {
+            color: var(--primary);
+            animation: glowPulse 1.5s infinite alternate;
+        }
+        
+        .gold {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        
+        .matrix-text {
+            color: var(--matrix);
+            text-shadow: 0 0 10px var(--matrix);
+        }
+        
+        .error {
+            color: var(--error);
+        }
+        
+        /* Hacking effect */
+        .hacking-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        .hacking-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .hack-grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 2px;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        
+        .hack-cell {
+            background: rgba(0, 255, 65, 0.05);
+            transition: background 0.1s;
+        }
+        
+        .hack-content {
+            position: relative;
+            z-index: 1001;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .hack-text {
+            font-size: 2.5rem;
+            color: var(--matrix);
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px var(--matrix);
+            animation: hackPulse 1s infinite alternate;
+        }
+        
+        .hack-progress {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 20px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+        
+        @keyframes hackPulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .terminal-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .user-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-grid"></div>
+    
+    <div class="hacking-overlay" id="hacking-overlay">
+        <div class="hack-grid" id="hack-grid"></div>
+        <div class="hack-content">
+            <div class="hack-text">SYSTEM BREACH IN PROGRESS</div>
+            <div class="kali-ascii">
+  ██╗  ██╗ █████╗  ██████╗██╗  ██╗██╗  ██╗ ██████╗ 
+  ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██║ ██╔╝██╔═══██╗
+  ███████║███████║██║     █████╔╝ █████╔╝ ██║   ██║
+  ██╔══██║██╔══██║██║     ██╔═██╗ ██╔═██╗ ██║   ██║
+  ██║  ██║██║  ██║╚██████╗██║  ██╗██║  ██╗╚██████╔╝
+  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ 
+            </div>
+            <div class="hack-progress" id="hack-progress">0%</div>
+        </div>
+    </div>
+    
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="header-glow"></div>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-terminal"></i></div>
+                <div class="logo-text">ANON TERMINAL</div>
+            </div>
+            <div class="user-info">
+                <div class="user-icon"><i class="fas fa-user-secret"></i></div>
+                <div class="username">ANON</div>
+            </div>
+        </div>
+        
+        <div class="terminal-content">
+            <div class="welcome-message">
+                <div class="welcome-title">Kali Linux - Legendary Edition</div>
+                <div class="welcome-subtitle">
+                    Welcome back, <span class="accent">Anon</span>. Secure connection established | <span class="matrix-text">Quantum Encryption</span><br>
+                    Type <span class="accent">'help'</span> for available commands or <span class="gold">'start hack'</span> for penetration testing
+                </div>
+                <div class="kali-ascii">
+  ▄▄▄████▄▄▄    ▄▄▄▄▄    ▄▄▄▄▄   ▄▄▄▄▄   ▄▄▄▄▄   ▄   ██▄ 
+  ██▀▀▀██████   ██▀▀▀██  ██▀▀▀██  ██▀▀██  ██▀▀██  ██  ████ 
+  ██    █████   ██    ██ ██    ██ ██  ██  ██  ██  ██▌ █▀██ 
+  █████████▀▀   ███████▀ ███████▀ █████▀  █████▀  ██▌ █ ██ 
+  ██            ██       ██       ██      ██      ██  █  █ 
+  ██            ██       ██       ██      ██      █▌  █  █ 
+  ▀▀            ▀▀       ▀▀       ▀▀      ▀▀      ▀  ▀   ▀ 
+                </div>
+            </div>
+            
+            <div class="command-history" id="history">
+                <div class="command-output">
+                    <div class="command-line">whoami</div>
+                    <div class="command-result">> User: <span class="accent">Anon</span><br>> Access Level: <span class="success">ROOT</span><br>> Session: #K4L1-4N0N-1337</div>
+                </div>
+                <div class="command-output">
+                    <div class="command-line">system status</div>
+                    <div class="command-result">> System: <span class="success">Operational</span><br>> Security: <span class="accent">Level 9</span><br>> Memory: 64GB DDR5<br>> Encryption: <span class="matrix-text">Quantum Active</span></div>
+                </div>
+            </div>
+            
+            <div class="command-input-container">
+                <div class="input-prefix">anon@kali</div>
+                <input type="text" id="command-input" autocomplete="off" autofocus>
+                <div class="cursor"></div>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-glow"></div>
+            <div class="status-item">
+                <div class="status-indicator"></div>
+                <div>CONNECTED: <span class="matrix-text">192.168.1.133</span></div>
+            </div>
+            <div class="status-item">ENCRYPTION: <span class="accent">QUANTUM</span></div>
+            <div class="status-item">USER: <span class="success">ANON</span></div>
+        </div>
+    </div>
+
+    <audio id="type-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-modem-broadcast-1081.mp3"></audio>
+    <audio id="enter-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3"></audio>
+    <audio id="hack-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-ambience-loop-358.mp3"></audio>
+    <audio id="access-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
+
+    <script>
+        // Terminal functionality
+        const commandInput = document.getElementById('command-input');
+        const historyElement = document.getElementById('history');
+        const hackingOverlay = document.getElementById('hacking-overlay');
+        const hackGrid = document.getElementById('hack-grid');
+        const hackProgress = document.getElementById('hack-progress');
+        
+        // Create hack grid
+        for (let i = 0; i < 400; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('hack-cell');
+            hackGrid.appendChild(cell);
+        }
+        
+        // Randomize hack cells
+        function randomizeHackCells() {
+            document.querySelectorAll('.hack-cell').forEach(cell => {
+                if (Math.random() > 0.7) {
+                    cell.style.background = 'rgba(0, 255, 65, ' + (Math.random() * 0.3 + 0.1) + ')';
+                    cell.style.boxShadow = '0 0 10px rgba(0, 255, 65, 0.5)';
+                } else {
+                    cell.style.background = 'transparent';
+                    cell.style.boxShadow = 'none';
+                }
+            });
+        }
+        
+        // Hacking animation
+        function startHackingAnimation(target) {
+            hackingOverlay.classList.add('active');
+            const hackSound = document.getElementById('hack-sound');
+            hackSound.play();
+            hackSound.volume = 0.4;
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10);
+                if (progress > 100) progress = 100;
+                hackProgress.textContent = `${progress}%`;
+                
+                randomizeHackCells();
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        hackingOverlay.classList.remove('active');
+                        hackSound.pause();
+                        hackSound.currentTime = 0;
+                        
+                        // Add hack result to terminal
+                        const output = `
+                            > <span class="accent">TARGET COMPROMISED:</span> ${target}
+                            > <span class="success">ROOT ACCESS OBTAINED</span>
+                            > System fully controlled
+                            > Time elapsed: ${Math.floor(Math.random() * 10) + 3}.${Math.floor(Math.random() * 60)} seconds
+                        `;
+                        
+                        const commandOutput = document.createElement('div');
+                        commandOutput.className = 'command-output';
+                        commandOutput.innerHTML = `
+                            <div class="command-line">hack ${target}</div>
+                            <div class="command-result">${output}</div>
+                        `;
+                        
+                        historyElement.appendChild(commandOutput);
+                        historyElement.scrollTop = historyElement.scrollHeight;
+                        
+                        // Play access sound
+                        const accessSound = document.getElementById('access-sound');
+                        accessSound.play();
+                    }, 2000);
+                }
+            }, 200);
+        }
+        
+        // Kali Linux commands
+        const commands = {
+            help: () => `
+                > <span class="accent">AVAILABLE COMMANDS:</span>
+                > <span class="success">help</span> - Show this help message
+                > <span class="success">clear</span> - Clear terminal screen
+                > <span class="success">system</span> - Show system information
+                > <span class="success">scan [target]</span> - Scan network for vulnerabilities
+                > <span class="success">hack [target]</span> - Initiate penetration testing
+                > <span class="success">whoami</span> - Show current user info
+                > <span class="success">date</span> - Show current date/time
+                > <span class="success">encrypt [msg]</span> - Encrypt a message
+                > <span class="success">decrypt [msg]</span> - Decrypt a message
+                > <span class="success">exit</span> - Exit terminal session
+                > <span class="success">matrix</span> - Enable Matrix mode
+                > <span class="success">sudo</span> - Activate root privileges
+                > <span class="success">nmap</span> - Run network mapper
+            `,
+            clear: () => {
+                historyElement.innerHTML = '';
+                return '';
+            },
+            system: () => `
+                > <span class="accent">SYSTEM INFORMATION:</span>
+                > OS: Kali Linux 2023.4 Legendary
+                > Kernel: 6.4.0-kali-amd64
+                > Uptime: 7 days, 9:42:15
+                > CPU: AMD Ryzen 9 7950X (32) @ 5.70GHz
+                > Memory: 64GB DDR5 @ 6000MHz
+                > Security: Quantum Encryption
+                > User: <span class="success">Anon (root)</span>
+            `,
+            scan: (fullCmd) => {
+                const target = fullCmd.split(' ')[1] || '192.168.1.0/24';
+                return `
+                    > <span class="accent">INITIATING NETWORK SCAN...</span>
+                    > Scanning ${target}
+                    > 
+                    > <span class="success">[+]</span> 192.168.1.1 - Router (ASUS ROG Rapture)
+                    > <span class="success">[+]</span> 192.168.1.101 - Workstation (Linux 6.4.0)
+                    > <span class="success">[+]</span> 192.168.1.150 - NAS (Synology DS1821+)
+                    > <span class="success">[+]</span> 192.168.1.200 - Security System
+                    > 
+                    > <span class="accent">VULNERABILITIES FOUND:</span>
+                    > <span class="error">[!]</span> 192.168.1.1: Weak admin password
+                    > <span class="error">[!]</span> 192.168.1.101: Open port 22 (SSH)
+                    > <span class="error">[!]</span> 192.168.1.200: CVE-2023-45678 vulnerability
+                    > 
+                    > Scan completed in 2.8 seconds
+                `;
+            },
+            hack: (fullCmd) => {
+                const target = fullCmd.split(' ')[1] || '192.168.1.101';
+                startHackingAnimation(target);
+                return `
+                    > <span class="accent">INITIATING PENETRATION TEST...</span>
+                    > Target: ${target}
+                    > Bypassing firewall...
+                    > Exploiting vulnerabilities...
+                    > 
+                    > <span class="matrix-text">HACK IN PROGRESS...</span>
+                `;
+            },
+            whoami: () => `
+                > <span class="accent">USER INFORMATION:</span>
+                > Username: <span class="success">Anon</span>
+                > UID: 0 (root)
+                > GID: 0 (root)
+                > Groups: root, kali, sudo, shadow
+                > Session: #K4L1-4N0N-1337
+                > Security Clearance: <span class="accent">LEVEL 10</span>
+            `,
+            date: () => {
+                const now = new Date();
+                return `> <span class="accent">Current date/time:</span> ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            },
+            encrypt: (cmd) => {
+                const message = cmd.split(' ').slice(1).join(' ') || 'Access granted to mainframe';
+                return `
+                    > <span class="accent">ENCRYPTING MESSAGE:</span>
+                    > "${message}"
+                    > 
+                    > Using Quantum encryption...
+                    > Generating secure keys...
+                    > 
+                    > <span class="success">Encrypted message:</span>
+                    > U2FsdGVkX1+9v3X7z2T9cJ2v7Yy5s3aV0xY=
+                `;
+            },
+            decrypt: (cmd) => {
+                const message = cmd.split(' ').slice(1).join(' ') || 'U2FsdGVkX1+9v3X7z2T9cJ2v7Yy5s3aV0xY=';
+                return `
+                    > <span class="accent">DECRYPTING MESSAGE:</span>
+                    > "${message}"
+                    > 
+                    > Using Quantum decryption...
+                    > Validating security keys...
+                    > 
+                    > <span class="success">Decrypted message:</span>
+                    > "Access granted to mainframe"
+                `;
+            },
+            exit: () => `
+                > <span class="accent">TERMINATING SESSION...</span>
+                > Erasing command history...
+                > Closing network connections...
+                > 
+                > <span class="success">Session #K4L1-4N0N-1337 terminated</span>
+            `,
+            kali: () => `
+                > <span class="accent">KALI LINUX - LEGENDARY EDITION</span>
+                > 
+                > "The quieter you become, the more you are able to hear."
+                > 
+                > <span class="gold">Advanced tools:</span>
+                > - nmap (Enhanced)
+                > - metasploit (Quantum)
+                > - burpsuite (Pro)
+                > - john (GPU Accelerated)
+                > - sqlmap (AI Enhanced)
+                > - wireshark (Quantum Decryption)
+                > 
+                > Type <span class="success">'help'</span> for available commands
+            `,
+            sudo: () => `
+                > <span class="accent">ROOT PRIVILEGES ACTIVATED</span>
+                > 
+                > [sudo] password for anon: 
+                > ********
+                > 
+                > <span class="success">Authentication successful</span>
+                > You now have full root access
+            `,
+            nmap: (fullCmd) => {
+                const target = fullCmd.split(' ')[1] || '192.168.1.0/24';
+                return `
+                    > <span class="accent">NMAP 8.0 - QUANTUM NETWORK MAPPER</span>
+                    > 
+                    > Starting Nmap scan at ${new Date().toLocaleTimeString()}
+                    > Scanning ${target}
+                    > 
+                    > Discovered hosts:
+                    > 192.168.1.1   - ASUS ROG Rapture (Router)
+                    > 192.168.1.101 - Ubuntu 22.04 LTS
+                    > 192.168.1.150 - Synology NAS (DS1821+)
+                    > 192.168.1.200 - Security System (v2.4)
+                    > 
+                    > <span class="success">Scan completed in 1.8 seconds</span>
+                `;
+            },
+            matrix: () => {
+                document.documentElement.style.setProperty('--primary', '#00ff41');
+                document.documentElement.style.setProperty('--secondary', '#00ff9d');
+                document.documentElement.style.setProperty('--accent', '#00ff9d');
+                return `
+                    > <span class="matrix-text">MATRIX MODE ACTIVATED</span>
+                    > System encryption upgraded
+                    > Security protocols bypassed
+                    > Welcome to the real world, Anon
+                `;
+            },
+            default: (cmd) => `
+                > <span class="error">Command not found:</span> ${cmd}
+                > 
+                > Type <span class="success">'help'</span> for available commands
+            `
+        };
+        
+        // Execute command
+        function executeCommand(fullCommand) {
+            if (!fullCommand) return;
+            
+            const [baseCommand, ...args] = fullCommand.trim().split(' ');
+            const cmd = baseCommand.toLowerCase();
+            
+            // Play enter sound
+            const enterSound = document.getElementById('enter-sound');
+            enterSound.currentTime = 0;
+            enterSound.play();
+            
+            let output;
+            
+            if (commands[cmd]) {
+                output = commands[cmd](fullCommand);
+            } else {
+                output = commands.default(fullCommand);
+            }
+            
+            const commandOutput = document.createElement('div');
+            commandOutput.className = 'command-output';
+            commandOutput.innerHTML = `
+                <div class="command-line">${fullCommand}</div>
+                <div class="command-result">${output}</div>
+            `;
+            
+            historyElement.appendChild(commandOutput);
+            
+            // Scroll to bottom
+            historyElement.scrollTop = historyElement.scrollHeight;
+        }
+        
+        // Handle Enter key
+        commandInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value;
+                this.value = '';
+                
+                if (command.trim() === '') return;
+                
+                executeCommand(command);
+            } else if (e.key.length === 1) {
+                // Play type sound
+                const typeSound = document.getElementById('type-sound');
+                typeSound.currentTime = 0;
+                typeSound.play();
+            }
+        });
+        
+        // Initial focus on input
+        commandInput.focus();
+        
+        // Welcome message after load
+        setTimeout(() => {
+            executeCommand('kali');
+        }, 1000);
+    </script>
+</body>
+</html>
